@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { api, reais } from '../api.js';
 import { useTitulo } from '../App.jsx';
 
-const CAMPOS = [['descricao', 'Descrição'], ['marca', 'Marca'], ['especificacao', 'Especificação'], ['preco', 'Preço (R$)'], ['grupo', 'Grupo'], ['unidade', 'Unidade']];
+const CAMPOS = [['descricao', 'Descrição'], ['marca', 'Marca'], ['especificacao', 'Especificação'], ['preco', 'Preço (R$)'], ['unidade', 'Unidade']];
 
 export default function Admin() {
   useTitulo('Painel administrativo | Eletro Imperial');
@@ -77,8 +77,22 @@ function FotoProduto({ chama, valor, onChange }) {
 function Produtos({ chama }) {
   const [q, setQ] = useState(''); const [pagina, setPagina] = useState(1);
   const [d, setD] = useState({ itens: [], paginas: 1, total: 0 }); const [ed, setEd] = useState(null); const [novo, setNovo] = useState(false);
+  const [categorias, setCategorias] = useState([]); const [modalCategoria, setModalCategoria] = useState(false);
+  const [nomeCategoria, setNomeCategoria] = useState(''); const [erroCategoria, setErroCategoria] = useState(''); const [salvandoCategoria, setSalvandoCategoria] = useState(false);
   const carregar = () => chama(`/admin/produtos?q=${encodeURIComponent(q)}&pagina=${pagina}&limite=20`).then(setD).catch(() => {});
+  const carregarCategorias = () => chama('/admin/categorias').then(setCategorias).catch(() => {});
   useEffect(() => { const t = setTimeout(carregar, 300); return () => clearTimeout(t); }, [q, pagina]);
+  useEffect(() => { carregarCategorias(); }, []);
+  async function criarCategoria(e) {
+    e.preventDefault(); setErroCategoria(''); setSalvandoCategoria(true);
+    try {
+      const r = await chama('/admin/categorias', { method: 'POST', body: { nome: nomeCategoria } });
+      const atualizadas = await chama('/admin/categorias');
+      setCategorias(atualizadas); setEd((atual) => atual ? { ...atual, grupo: r.nome } : atual);
+      setNomeCategoria(''); setModalCategoria(false);
+    } catch (x) { setErroCategoria(x.message); }
+    finally { setSalvandoCategoria(false); }
+  }
   async function salvar(e) {
     e.preventDefault();
     const { id, ...corpo } = ed;
@@ -98,11 +112,31 @@ function Produtos({ chama }) {
         <h2>{novo ? 'Novo produto' : 'Editar produto'}</h2>
         {novo && <label>Código (deixe vazio para gerar automático)<input value={ed.codigo} onChange={(e) => setEd({ ...ed, codigo: e.target.value })} /></label>}
         {CAMPOS.map(([k, r]) => <label key={k}>{r}<input value={ed[k] ?? ''} onChange={(e) => setEd({ ...ed, [k]: e.target.value })} /></label>)}
+        <div className="categoria-campo">
+          <label htmlFor="produto-grupo">Categoria</label>
+          <div className="categoria-selecao">
+            <select id="produto-grupo" required value={ed.grupo || ''} onChange={(e) => setEd({ ...ed, grupo: e.target.value })}>
+              <option value="" disabled>Selecione uma categoria</option>
+              {categorias.map((categoria) => <option key={categoria} value={categoria}>{categoria}</option>)}
+              {ed.grupo && !categorias.includes(ed.grupo) && <option value={ed.grupo}>{ed.grupo}</option>}
+            </select>
+            <button type="button" className="btn btn-borda-esc sm" onClick={() => { setErroCategoria(''); setModalCategoria(true); }}>+ Nova categoria</button>
+          </div>
+        </div>
         <FotoProduto chama={chama} valor={ed.imagem_url} onChange={(url) => setEd({ ...ed, imagem_url: url })} />
         <label className="check"><input type="checkbox" checked={!!ed.destaque} onChange={(e) => setEd({ ...ed, destaque: e.target.checked ? 1 : 0 })} /> Produto em destaque na página inicial</label>
         <label className="check"><input type="checkbox" checked={!!ed.ativo} onChange={(e) => setEd({ ...ed, ativo: e.target.checked ? 1 : 0 })} /> Visível no site</label>
         <div className="botoes"><button className="btn btn-azul">Salvar</button><button type="button" className="btn btn-borda-esc" onClick={() => setEd(null)}>Cancelar</button></div>
       </form></div>}
+      {modalCategoria && <div className="modal" role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setModalCategoria(false); }}>
+        <form className="form modal-categoria" onSubmit={criarCategoria}>
+          <h2>Nova categoria</h2>
+          <p>Cadastre uma categoria para reutilizá-la nos produtos da loja.</p>
+          <label>Nome da categoria<input autoFocus required minLength={2} maxLength={80} value={nomeCategoria} onChange={(e) => setNomeCategoria(e.target.value)} placeholder="Ex.: Iluminação" /></label>
+          {erroCategoria && <p className="erro">{erroCategoria}</p>}
+          <div className="botoes"><button className="btn btn-azul" disabled={salvandoCategoria}>{salvandoCategoria ? 'Salvando...' : 'Salvar categoria'}</button><button type="button" className="btn btn-borda-esc" onClick={() => setModalCategoria(false)}>Cancelar</button></div>
+        </form>
+      </div>}
     </>
   );
 }

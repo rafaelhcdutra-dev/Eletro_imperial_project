@@ -27,15 +27,13 @@ const LINKS = [['/', 'Início'], ['/produtos', 'Produtos'], ['/categorias', 'Cat
 
 
 export const Logo = () => (
-  <Link to="/" className="logo">
-    <img>
-      src="./public/logo-img.jpeg"
-      alt="Logo da Eletro Imperial"
+  <Link to="/" className="logo" aria-label="Eletro Imperial — página inicial">
+    <img
+      src="/logo-img.jpeg"
+      alt=""
       className="logo-img"
-    </img>
-    <span>
-      ELETRO<b>IMPERIAL</b>
-    </span>
+    />
+    <span>ELETRO<b>IMPERIAL</b></span>
   </Link>
 );
 

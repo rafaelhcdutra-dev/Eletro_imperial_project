@@ -14,6 +14,11 @@ export const pool = mysql.createPool({
 
 // Cria as tabelas de login se ainda não existirem (não mexe em nada que já existe).
 export async function garantirTabelas() {
+  await pool.query(`CREATE TABLE IF NOT EXISTS categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(80) NOT NULL UNIQUE,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`);
   await pool.query(`CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(120) NOT NULL,
