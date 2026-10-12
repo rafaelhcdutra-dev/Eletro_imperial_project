@@ -1,0 +1,13 @@
+export const POSTS = [
+  { cat: 'Segurança elétrica', titulo: 'Como escolher o disjuntor correto?',
+    texto: 'O disjuntor protege o circuito contra sobrecarga e curto-circuito. Sua corrente nominal deve ser maior ou igual à corrente do circuito e menor ou igual à capacidade de condução do cabo, para que o cabo nunca aqueça além do limite. Além da corrente, observe a curva de disparo (B, C ou D, conforme o tipo de carga) e a capacidade de interrupção. O dimensionamento deve seguir a NBR 5410 e, em caso de dúvida, ser feito por um profissional habilitado.' },
+  { cat: 'Segurança elétrica', titulo: 'Qual a diferença entre DR e DPS?',
+    texto: 'O DR (dispositivo diferencial residual) protege as pessoas: desliga o circuito quando detecta fuga de corrente, como em um choque ou isolação danificada. O DPS (protetor contra surtos) protege os equipamentos: desvia para o aterramento sobretensões causadas por descargas atmosféricas ou manobras na rede. São dispositivos complementares, e um não substitui o outro.' },
+  { cat: 'Dicas de elétrica', titulo: 'Como dimensionar um cabo elétrico?',
+    texto: 'A seção do cabo depende da corrente do circuito, do método de instalação (embutido, em eletroduto, aparente), da temperatura e do agrupamento de circuitos, além da queda de tensão admissível no comprimento do trecho. A NBR 5410 também define seções mínimas, como 1,5 mm² para iluminação e 2,5 mm² para tomadas em instalações residenciais. Confirme sempre o cálculo com um profissional habilitado.' },
+  { cat: 'Normas e boas práticas', titulo: 'Quando utilizar um dispositivo DR?',
+    texto: 'A NBR 5410 exige proteção diferencial de alta sensibilidade (30 mA) em circuitos de áreas molhadas e úmidas, como banheiros, cozinhas, áreas de serviço e áreas externas, e em tomadas de uso geral. Na prática, o DR é recomendado na maioria dos circuitos de uma instalação residencial moderna. Ele deve ser testado periodicamente com o botão de teste.' },
+  { cat: 'Veículos elétricos', titulo: 'Como funciona um carregador para carro elétrico?',
+    texto: 'Nos carregadores em corrente alternada (wallbox), o carro converte a energia da rede em corrente contínua por meio do seu carregador interno; a wallbox cuida da comunicação com o veículo e da segurança do processo. Nos carregadores rápidos em corrente contínua, a conversão é feita pelo próprio equipamento. A instalação exige circuito dedicado, proteções adequadas e projeto de um profissional habilitado.' },
+];
+export const CATEGORIAS_BLOG = ['Dicas de elétrica', 'Segurança elétrica', 'Novidades', 'Produtos', 'Tecnologia', 'Automação', 'Energia', 'Veículos elétricos', 'Normas e boas práticas'];
