@@ -6,19 +6,19 @@ const CAMPOS = [['descricao', 'Descrição'], ['marca', 'Marca'], ['especificaca
 
 export default function Admin() {
   useTitulo('Painel administrativo | Eletro Imperial');
-  const [token, setToken] = useState(localStorage.getItem('ei_token') || '');
-  const [usuario, setUsuario] = useState(() => { try { return JSON.parse(localStorage.getItem('ei_user')) || null; } catch { return null; } });
+  const [token, setToken] = useState(localStorage.getItem('ei_admin') || '');
+  const [usuario, setUsuario] = useState(() => { try { return JSON.parse(localStorage.getItem('ei_admin_usuario')) || null; } catch { return null; } });
   const [f, setF] = useState({ email: '', senha: '' });
   const [aba, setAba] = useState('produtos');
   const [erro, setErro] = useState('');
-  const sair = () => { localStorage.removeItem('ei_token'); localStorage.removeItem('ei_user'); setToken(''); setUsuario(null); };
+  const sair = () => { localStorage.removeItem('ei_admin'); localStorage.removeItem('ei_admin_usuario'); setToken(''); setUsuario(null); };
   const chama = (p, o = {}) => api(p, { ...o, token }).catch((e) => { if (e.message === 'Não autorizado') sair(); throw e; });
 
   async function entrar(e) {
     e.preventDefault();
     try {
       const r = await api('/admin/login', { method: 'POST', body: f });
-      localStorage.setItem('ei_token', r.token); localStorage.setItem('ei_user', JSON.stringify(r.usuario));
+      localStorage.setItem('ei_admin', r.token); localStorage.setItem('ei_admin_usuario', JSON.stringify(r.usuario));
       setToken(r.token); setUsuario(r.usuario); setErro('');
     } catch (x) { setErro(x.message); }
   }
