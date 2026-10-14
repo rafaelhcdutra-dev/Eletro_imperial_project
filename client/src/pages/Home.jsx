@@ -32,7 +32,7 @@ export default function Home() {
   useEffect(() => {
     api('/produtos?destaque=1&limite=8').then((r) => r.itens.length ? r.itens :
       api('/produtos?limite=8&grupos=' + encodeURIComponent('DISJUNTORES|DISP PROTEÇAO|TOMADAS|CABOS E FIOS')).then((x) => x.itens))
-      .then(setDest).catch(() => {});
+      .then(setDest).catch(() => { });
   }, []);
   return (
     <>
@@ -98,7 +98,19 @@ export default function Home() {
         <div><h2 className="tit esq">Venha até a Eletro Imperial</h2>
           <address><MapPin size={16} /> <b>Avenida Walter Nardelli, 682<br />Parque Imperial<br />Salto – SP<br />CEP 13323-760</b></address>
           <Horarios /><p><a className="btn btn-azul" href={MAPS} target="_blank" rel="noreferrer">COMO CHEGAR</a></p></div>
-        <iframe title="Mapa" className="mapa" loading="lazy" src="https://www.google.com/maps?q=Avenida+Walter+Nardelli+682+Salto+SP&output=embed" />
+
+        <iframe
+          title="Localização da Eletro Imperial no Google Maps"
+          className="mapa"
+          loading="lazy"
+          src="https://maps.google.com/maps?q=Av.%20Walter%20Nardelli%2C%20682%2C%20Parque%20Imperial%2C%20Salto%2C%20SP%2C%2013323-760&output=embed"
+          width="100%"
+          height="350"
+          style={{ border: 0 }}
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+
       </div></section>
     </>
   );

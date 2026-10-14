@@ -13,7 +13,9 @@ import { ContaProvider, useConta } from './conta.jsx';
 const PADRAO = { whatsapp: '551140292918', telefone: '(11) 4029-2918', horario_semana: '08:00 às 18:00', horario_sabado: '08:00 às 16:00', instagram: '' };
 const Cfg = createContext(PADRAO);
 export const useCfg = () => useContext(Cfg);
-export const MAPS = 'https://www.google.com/maps/search/?api=1&query=Avenida+Walter+Nardelli+682+Salto+SP';
+
+export const MAPS = 'https://www.google.com/maps?rlz=1C1GCEA_pt-BRBR1201BR1202&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTISCAEQLhgNGK8BGMcBGIAEGI4FMgkIAhAAGA0YgAQyCAgDEAAYDRgeMggIBBAAGA0YHjIICAUQABgNGB4yCggGEAAYCBgNGB4yCggHEAAYCBgNGB4yCggIEAAYCBgNGB7SAQg0MDM0ajBqN6gCCLACAfEFVW-ge27RNqo&um=1&ie=UTF-8&fb=1&gl=br&sa=X&geocode=KfOQIpNVT8-UMZV_NcyEWdER&daddr=Av.+Walter+Nardelli,+682+-+Parque+Imperial,+Salto+-+SP,+13323-760';
+
 
 export function useTitulo(t, d) {
   useEffect(() => {
